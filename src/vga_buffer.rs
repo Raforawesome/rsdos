@@ -73,12 +73,6 @@ impl VGABuffer {
 			writer: Writer::new()
 		}
 	}
-
-	// pub fn write(buffer: &[u8], clr: Color) {
-	// 	for (i, byte) in buffer.iter().enumerate() {
-	// 		unsafe {}
-	// 	}
-	// }
 }
 
 impl VGABuffer {

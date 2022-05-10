@@ -2,14 +2,15 @@
 #![no_main]
 mod vga_buffer;
 use core::panic::PanicInfo;
-use vga_buffer::VGABuffer;
+use vga_buffer::{ VGABuffer, Color };
 
 
 const HELLO: &[u8] = b"Boot success";
 // VGA Buffer Address: 0xb8000
 #[no_mangle]  // keep function name as-is in genned code
 pub extern "C" fn _start() -> ! {  // entry point
-	VGABuffer::write(HELLO, 0xb);
+	let mut vga_buffer = VGABuffer::new();
+	let _ = vga_buffer.write(HELLO, Color::White);
 
 	loop {}
 }

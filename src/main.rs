@@ -11,7 +11,7 @@ pub extern "C" fn _start() -> ! {  // entry point
 
 	for (i, b) in HELLO.iter().enumerate() {
 		unsafe {
-			*vga_buffer.offset(i as isize * 2) = byte;
+			*vga_buffer.offset(i as isize * 2) = *b;
 			*vga_buffer.offset(i as isize * 2 + 1) = 0xb;
 			// Multiplied by 2 because the bytes are written in pairs
 			// can be thought of as vga_buffer.add(i).write([byte, 0xb]);

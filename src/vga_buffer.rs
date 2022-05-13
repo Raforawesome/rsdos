@@ -51,13 +51,10 @@ impl Writer {
 				self.column += 1;
 			}
 			unsafe {
-				// *VGABuffer::ADDRESS.add((self.column as usize) * 2) = byte;
-				// *VGABuffer::ADDRESS.add((self.column as usize) * 2 + 1) = clr as u8;
 				let mut pos: *mut u8 = self.addr.add(self.column as usize * 2);
 				pos = pos.add((self.row * 80 * 2) as usize);
 				*pos = byte;
 				*(pos.add(1usize)) = clr as u8;
-				// self.addr = self.addr.add(2);
 			}
 			Ok(())
 		}

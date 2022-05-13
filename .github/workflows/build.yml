@@ -36,6 +36,8 @@
           rustup install ${{ matrix.rust }}
           rustup target add ${{ matrix.target }}
           rustup show
+      - name: Set Nightly Override
+        run: rustup override set nightly
       - name: Install bootimage
         run: |
           cargo install bootimage

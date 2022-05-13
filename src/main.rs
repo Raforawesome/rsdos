@@ -10,7 +10,9 @@
 // clippy::perf
 // )]
 
+#[macro_use]
 mod vga_buffer;
+mod allocator;
 use core::panic::PanicInfo;
 use vga_buffer::{ VGABuffer, Color };
 
@@ -19,6 +21,7 @@ const HELLO: &[u8] = b"Boot success";
 // VGA Buffer Address: 0xb8000
 #[no_mangle]  // keep function name as-is in genned code
 pub unsafe extern "C" fn _start() -> ! {  // entry point
+	println!("test");
 	let mut vga_buffer = VGABuffer::new();
 	let _ = vga_buffer.write(HELLO, Color::White);
 

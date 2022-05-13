@@ -36,6 +36,8 @@
           rustup install ${{ matrix.rust }}
           rustup target add ${{ matrix.target }}
           rustup show
+      - name: Install rust-src
+        run: rustup component add rust-src
       - name: Set Nightly Override
         run: rustup override set nightly
       - name: Install bootimage

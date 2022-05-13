@@ -1,3 +1,5 @@
 /target
 .idea/
 .vscode/
+.github/.DS_Store
+.DS_Store

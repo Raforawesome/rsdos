@@ -92,5 +92,6 @@ macro_rules! println {
 	($l:literal) => {
 		let mut writer: VGABuffer = VGABuffer::new();
 		let _ = writer.write($l.as_bytes(), Color::White);
+		core::mem::drop(writer);
 	}
 }

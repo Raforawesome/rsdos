@@ -1,3 +1,4 @@
+// dummy comment to catch vscode fake error
 #![allow(clippy::empty_loop, clippy::missing_safety_doc)]
 #![no_std]  // do not link standard libraries
 #![no_main]

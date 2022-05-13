@@ -22,6 +22,7 @@ pub enum Color {
 }
 
 
+#[derive(Debug, Clone)]
 struct Writer {
 	column: u8,
 	row: u8,
@@ -64,6 +65,7 @@ impl Writer {
 }
 
 
+#[derive(Debug, Clone)]
 pub struct VGABuffer {
 	writer: Writer
 }
@@ -92,6 +94,12 @@ macro_rules! println {
 	($l:literal) => {
 		let mut writer: VGABuffer = VGABuffer::new();
 		let _ = writer.write($l.as_bytes(), Color::White);
-		core::mem::drop(writer);
+	};
+	($l:literal, $(x:ident)*, *) => {
+		let mut writer: VGABuffer = VGABuffer::new();
+		let _ = writer.write($l.as_bytes(), Color::White);
+		$(
+			let _ = writer.write($x.as_bytes(), Color::White);
+		)*;
 	}
 }

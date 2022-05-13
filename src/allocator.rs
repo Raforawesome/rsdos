@@ -5,9 +5,11 @@ use core::ptr::null_mut;
 
 
 pub struct Allocator;
+
 impl Allocator {
 	pub const fn new() -> Self { Self {} }
 }
+
 unsafe impl GlobalAlloc for Allocator {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         null_mut()

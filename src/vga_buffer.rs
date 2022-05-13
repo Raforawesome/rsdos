@@ -24,15 +24,16 @@ pub enum Color {
 
 struct Writer {
 	column: u8,
-	row: u8
+	row: u8,
+	addr: *mut u8
 }
 
 impl Writer {
 	const HEIGHT: u8 = 25;
 	const WIDTH: u8 = 80;
 
-	fn new() -> Self {
-		Self { column: 0, row: 0 }
+	const fn new() -> Self {
+		Self { column: 0, row: 0, addr: VGABuffer::ADDRESS }
 	}
 }
 
@@ -41,19 +42,21 @@ impl Writer {
 		if self.column >= Self::WIDTH && self.row >= Self::HEIGHT {
 			Err(())
 		} else {
-			if self.column >= Self::WIDTH {
+			if self.column >= Self::WIDTH || byte == b'\n' {
 				self.row += 1;
 				self.column = 0;
-				unsafe {
-					*VGABuffer::ADDRESS.add((self.column as usize) * 2) = byte;
-					*VGABuffer::ADDRESS.add((self.column as usize) * 2 + 1) = clr as u8;
-				}
+				if byte == b'\n' { return Ok(()); }
 			} else {
 				self.column += 1;
-				unsafe {
-					*VGABuffer::ADDRESS.add((self.column as usize) * 2) = byte;
-					*VGABuffer::ADDRESS.add((self.column as usize) * 2 + 1) = clr as u8;
-				}
+			}
+			unsafe {
+				// *VGABuffer::ADDRESS.add((self.column as usize) * 2) = byte;
+				// *VGABuffer::ADDRESS.add((self.column as usize) * 2 + 1) = clr as u8;
+				let mut pos: *mut u8 = self.addr.add(self.column as usize * 2);
+				pos = pos.add((self.row * 80 * 2) as usize);
+				*pos = byte;
+				*(pos.add(1usize)) = clr as u8;
+				// self.addr = self.addr.add(2);
 			}
 			Ok(())
 		}
@@ -68,7 +71,7 @@ pub struct VGABuffer {
 impl VGABuffer {
 	const ADDRESS: *mut u8 = 0xb8000 as *mut u8;
 
-	pub fn new() -> Self {
+	pub const fn new() -> Self {
 		Self {
 			writer: Writer::new()
 		}
@@ -78,7 +81,7 @@ impl VGABuffer {
 impl VGABuffer {
 	pub fn write(&mut self, bytes: &[u8], clr: Color) -> Result<(), ()> {
 		for byte in bytes {
-			self.writer.write(*byte, clr)?
+			self.writer.write(*byte, clr)?;
 		}
 		Ok(())
 	}

@@ -24,7 +24,7 @@ unsafe impl GlobalAlloc for Allocator {
 static ALLOCATOR: Allocator = Allocator;
 
 
-pub fn size_of<T>(_: T) -> Layout {
+pub fn sizeof<T>(_: T) -> Layout {
 	Layout::new::<T>()
 }
 

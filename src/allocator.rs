@@ -29,7 +29,7 @@ pub fn sizeof<T>(_: T) -> Layout {
 }
 
 pub fn malloc<T>(l: T) -> *mut u8 {
-	let layout: Layout = size_of(l);
+	let layout: Layout = sizeof(l);
 	unsafe {
 		ALLOCATOR.alloc(layout) as *mut u8
 	}
